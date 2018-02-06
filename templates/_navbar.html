@@ -1,0 +1,44 @@
+{% load static from staticfiles %}
+
+<nav style="">
+  <div class="nav-wrapper black darken-3">
+    <a href="{% url 'home' %}" class="brand-logo"><img src="{% static 'images/logo.png' %}" class="" height="64" alt=""></a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'league:player_list' %}">Players</a></li>
+      {% if user.is_superuser %}
+      <li><a href="{% url 'league:create_player' %}">Create Player</a></li>
+      {% endif %}
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+      <li><a href="{% url 'signup' %}">Signup</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+    <ul class="side-nav" id="mobile-demo">
+      {% comment %}
+
+        use "{% url 'create_player' %}"  on href
+        for namespaced views: "{% url 'namespace_on_urlspy:name_on_urlspy' %}"
+
+      {% endcomment %}
+
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'league:player_list' %}">Players</a></li>
+      {% if user.is_superuser %}
+      <li><a href="{% url 'league:create_player' %}">Create Player</a></li>
+      {% endif %}
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+      <li><a href="{% url 'signup' %}">Signup</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+<script type="text/javascript">
+  $( document ).ready(function(){
+    $(".button-collapse").sideNav();
+  })
+</script>

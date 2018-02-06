@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/league/css/player_list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="parent">
+  {% for player in players %}
+  {% if player.group == "1" %}
+  <div class="item card blue-grey darken-1">
+  {% endif%}
+  {% if player.group == "2" %}
+  <div class="item card blue-grey darken-3">
+  {% endif%}
+  {% if player.group == "3" %}
+  <div class="item card blue-grey darken-5">
+  {% endif%}
+     <div class="media">
+       <img class="teamicon" src="{% static 'images/team_icon_116_140.png' %}" alt="" class="responsive-img"> <!-- notice the "circle" class -->
+     </div>
+
+      <div class="info">
+        <span class="name">Name: {{player.name}}</span>
+        <span class="Category">Catagory: {{player.official_category}}</span>
+        <span class="Group">Group: {{player.group}}</span>
+      </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+
+{% endblock %}

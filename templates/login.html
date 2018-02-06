@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="formwrap card">
+
+<form action="{% url 'login' %}" method="post">
+  {% csrf_token %}
+  <label for="usename">Username</label>
+ <input type="text" name="username" value="">
+ <label for="password">Password</label>
+ <input type="password" name="password" value="">
+ <button class="waves-effect waves-light btn" type="submit" name="button">Login</button>
+</form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/league/css/create_player.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="formwrap card">
+
+<form action="{% url 'league:create_player' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+ <button class="waves-effect waves-light btn" type="submit" name="button">Add Player</button>
+</form>
+
+</div>
+
+<script type="text/javascript">
+  $('select').material_select();
+</script>
+{% endblock %}

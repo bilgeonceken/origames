@@ -1,0 +1,29 @@
+{% load static from staticfiles %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="{% static '/js/jquery.js' %}"></script>
+	<link rel="stylesheet" href="{% static '/css/materialize.css' %}">
+	<link rel="stylesheet" href="{% static '/css/base.css' %}">
+	<script src="{% static '/js/materialize.js' %}"></script>
+
+  {% block localstatic %}{% endblock %}
+
+	<title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+	{% include "_navbar.html" %}
+
+<div class="contentwrapper">
+{% block content %}{% endblock %}
+</div>
+
+</body>
+
+</html>
