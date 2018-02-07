@@ -7,4 +7,4 @@ class PlayerForm(ModelForm):
 
     class Meta:
         model = models.Player
-        fields = ["name","sex", "official_category", "group"]
+        fields = ["name","sex", "official_category"]

@@ -10,16 +10,13 @@ class Player(models.Model):
     EXP_WOMAN_A = "K21A"
     EXP_MAN_B = "E21B"
     EXP_WOMAN_B = "K21B"
+    YOUNG_WOMAN_A = "K20A"
     YOUNG_MAN_B = "E20B"
     YOUNG_WOMAN_B = "K20B"
     OLD_WOMAN = "K55"
 
     MALE = "M"
     FEMALE = "F"
-
-    GROUP_1 = "1"
-    GROUP_2 = "2"
-    GROUP_3 = "3"
 
 
     CATEGORY_CHOICES = (
@@ -29,6 +26,7 @@ class Player(models.Model):
         (EXP_WOMAN_A , "K21A"),
         (EXP_MAN_B , "E21B"),
         (EXP_WOMAN_B , "K21B"),
+        (YOUNG_WOMAN_A , "K20A"),
         (YOUNG_MAN_B , "E20B"),
         (YOUNG_WOMAN_B , "K20B"),
         (OLD_WOMAN , "K55"),
@@ -37,12 +35,6 @@ class Player(models.Model):
     SEX_CHOICES = (
         (MALE, "Male"),
         (FEMALE, "Female"),
-    )
-
-    GROUP_CHOICES = (
-        (GROUP_1, "1"),
-        (GROUP_2, "2"),
-        (GROUP_3, "3"),
     )
 
 
@@ -59,18 +51,13 @@ class Player(models.Model):
         choices=CATEGORY_CHOICES,
         default="E21E",
     )
-    group = models.CharField(
-        max_length=1,
-        choices=GROUP_CHOICES,
-        default=GROUP_1
-    )
 
     def __str__(self):
         return self.name
 
 
     class Meta:
-        ordering = ["group"]
+        ordering = ["name"]
 
 
 class Race(models.Model):
@@ -80,10 +67,30 @@ class Race(models.Model):
 
 
 class Participation(models.Model):
+    GROUP_1 = "1"
+    GROUP_2 = "2"
+    GROUP_3 = "3"
+
+    GROUP_CHOICES = (
+        (GROUP_1, "1"),
+        (GROUP_2, "2"),
+        (GROUP_3, "3"),
+    )
+
+
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     price = models.PositiveSmallIntegerField()
     score = models.PositiveSmallIntegerField(default=0)
+    group = models.CharField(
+        max_length=1,
+        choices=GROUP_CHOICES,
+        default=GROUP_1
+    )
+
+    def __str__(self):
+        return self.player.name
+
 
 
 class Team(models.Model):
