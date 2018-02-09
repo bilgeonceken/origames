@@ -1,4 +1,5 @@
 body{
 
-background-image: url("/static/images/bg.png");
+/*background-image: url("/static/images/bg.png");*/
+background-color: #212121;
 }

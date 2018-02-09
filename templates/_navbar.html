@@ -1,8 +1,9 @@
 {% load static from staticfiles %}
 
-<nav style="">
-  <div class="nav-wrapper black darken-3">
-    <a href="{% url 'home' %}" class="brand-logo"><img src="{% static 'images/logo.png' %}" class="" height="64" alt=""></a>
+
+<nav>
+  <div class="nav-wrapper #d32f2f red darken-2">
+    <a href="{% url 'home' %}" class="brand-logo center"><img src="{% static 'images/logo.svg' %}" style="margin-left: 10px;" class="" height="23" alt=""></a>
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
       {% if user.is_authenticated %}

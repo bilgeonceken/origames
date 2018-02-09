@@ -63,7 +63,15 @@ class Player(models.Model):
 class Race(models.Model):
     name = models.CharField(max_length=255)
     # teams = models.ManyToManyField(Team)
-    players = models.ManyToManyField(Player, through="Participation")
+    players = models.ManyToManyField(Player, through="Participation", related_name="races")
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+    class Meta:
+        ordering = ["-created_at"]
 
 
 class Participation(models.Model):
@@ -89,7 +97,7 @@ class Participation(models.Model):
     )
 
     def __str__(self):
-        return self.player.name
+        return self.player.name+" Participation"
 
 
 
@@ -97,3 +105,8 @@ class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     belonged_race = models.ForeignKey(Race, on_delete=models.CASCADE)
     selected_players = models.ManyToManyField(Participation)
+    created_at = models.DateTimeField(auto_now=True)
+    budget = models.PositiveSmallIntegerField(default=100)
+
+    def __str__(self):
+        return self.owner.username+"'s Team for "+self.belonged_race.name

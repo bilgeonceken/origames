@@ -6,9 +6,21 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from league import models
+from django.contrib.auth.models import User
 
 def home(request):
-    return render(request, "home.html")
+    if request.user.is_authenticated:
+        race = models.Race.objects.first();
+        team = models.Team.objects.get(owner=request.user, belonged_race=race)
+        budget=team.budget
+        print(budget)
+        team_players = team.selected_players.all().order_by("group", "-player__sex"); ## this returns participation objects
+        players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players)
+        return render(request, "wall.html",{"race":race,"team":team_players, "players":players_except_team, "budget": "{}".format(budget)})
+    else:
+        return render(request, "home.html")
+
 
 def login(request):
     if request.method=="POST":
@@ -22,7 +34,11 @@ def login(request):
         else:
             return render(request, "login.html")
 
-    return render(request, "login.html")
+    if request.user.is_authenticated:
+        return redirect("home")
+    else:
+        return render(request, "login.html")
+
 
 @login_required
 def logout(request):

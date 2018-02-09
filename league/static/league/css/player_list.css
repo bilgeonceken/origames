@@ -1,47 +1,26 @@
-/*
-      <img class="teamicon" src="{% static 'images/team_icon_116_140.png' %}" alt="" class="responsive-img"> <!-- notice the "circle" class -->
-      <img class="playericon" src="{% static 'images/player_icon_116_140' %}" alt="" class="responsive-img"> <!-- notice the "circle" class -->
-*/
-
-.parent {
-  border: 5px solid lightcoral;
-  margin: 0 auto;
-  width: 60%;
-  min-width: 366px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.biggerwrap{
+ padding: 10px;
 }
 
-.item {
-  height: 100px;
-  margin: 5px;
-  background: grey;
-  color: white;
-  font-weight: 600;
-  width: 50%;
-  min-width: 350px;
-  display: flex;
-  border: 2px solid lightcoral;
-
+.listwrap{
+  border: solid 1px lightcoral;
+  margin: 45px auto;
+  max-width: 700px;
 }
 
-.item .media {
- min-width: 0;
- margin: 5px;
- }
-
-.item img {
-  max-height: 100%;
-  width: auto;
-  }
-
-.info{
-  display: flex;
-  flex-direction: column;
+table
+{
+    counter-reset: rowNumber;
 }
 
-.info span{
-  display: block;
-  line-height: 25px;
+table tr > td:first-child
+{
+    counter-increment: rowNumber;
+}
+
+table tr td:first-child::before
+{
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
 }

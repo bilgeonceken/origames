@@ -1,0 +1,90 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/css/fluidity.css' %}">
+<link rel="stylesheet" href="{% static '/css/wall.css' %}">
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+function dragstart_handler(ev) {
+  // Add the drag data
+  as = ev.target;
+  ev.dataTransfer.setData("text/plain", ev.target.id);
+}
+
+</script>
+<div class="pagewrap">
+
+  <div class="row">
+    <div class="col s12">
+      <h4 class="white-text">{{ race.name }}</h1>
+    </div>
+  </div>
+
+<div class="card roster">
+  <h3 class="title">My Team</h3>
+  <div class="budget">
+    <div>Butget</div>
+    <div>
+      {{budget}}
+    </div>
+  </div>
+  <div class="rosterwrap">
+  {% for player in team %}
+  <div class="box" id="p1" draggable="true" ondragstart="dragstart_handler(event);">
+    <div class="remove">-</div>
+    <div class="left f">
+    <div class="name">
+      {{player.player.name}}
+    </div>
+    <div class="cats">
+      {{player.player.official_category}} Group: {{player.group}}
+    </div>
+    </div>
+    <div class="price">
+      <div>
+        {{player.price}}
+      </div>
+      <div class="price-price">
+        Price
+      </div>
+    </div>
+    <div class="right"></div>
+  </div>
+  {% endfor %}
+</div>
+
+</div>
+
+<div class="seperator"></div>
+<div class="card players">
+  <h3 class="title">Players</h3>
+
+  <div class="rosterwrap">
+  {% for player in players %}
+  <div class="box" id="p1" draggable="true" ondragstart="dragstart_handler(event);">
+    <div class="add">+</div>
+    <div class="left f">
+    <div class="name">
+      {{player.player.name}}
+    </div>
+    <div class="cats">
+      {{player.player.official_category}} Group: {{player.group}}
+    </div>
+    </div>
+    <div class="price">
+      <div>
+        {{player.price}}
+      </div>
+      <div class="price-price">
+        Price
+      </div>
+    </div>
+    <div class="right"></div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+{% endblock %}
