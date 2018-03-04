@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import timedelta
 
 # Create your models here.
 class Player(models.Model):
@@ -89,6 +90,7 @@ class Participation(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     price = models.PositiveSmallIntegerField()
+    finish_time = models.DurationField(default = timedelta(seconds=0))
     score = models.PositiveSmallIntegerField(default=0)
     group = models.CharField(
         max_length=1,
