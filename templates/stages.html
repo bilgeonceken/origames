@@ -1,0 +1,42 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/css/stages.css' %}">
+
+{% endblock %}
+
+
+{% block content %}
+<div class="containo">
+
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue-grey lighten-5">
+        <div class="card-content black-text">
+          <span class="card-title bb">Stages</span>
+
+          <table class="bordered">
+      			<thead>
+      				<tr>
+      					<th>Day</th>
+      					<th>Distance</th>
+      				</tr>
+      			</thead>
+      			<tbody>
+      				{% for stage in stages %}
+      				<tr {% if player.group == "2" %} style="background: grey;" {% endif %}>
+      					<td>{{stage.order}}</td>
+      					<td>{{stage.distance}}</td>
+      				</tr>
+      				{% endfor %}
+      			</tbody>
+      		</table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

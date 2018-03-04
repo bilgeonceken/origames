@@ -1,0 +1,40 @@
+{% load static from staticfiles %}
+<link rel="stylesheet" href="{% static '/css/_velonavbar.css' %}">
+
+<div class="banner">
+  <div class="bannermidwrapper">
+    <div class="logo">
+      <img src="{% static '/images/logo.svg' %}" alt="">
+      <img src="{% static '/images/desc.svg' %}" alt="">
+    </div>
+  </div>
+  <div class="navbar">
+    <div class="navbarmidwrapper">
+      <div class="navbarleft">
+        <ul class="navlist">
+          <li><a href="{% url 'home' %}">HOME</a></li>
+          <li><a href="">RULES</a></li>
+          <li><a href="{% url 'league:player_list' %}">RUNNERS</a></li>
+          <li><a href="{% url 'league:stages' %}">STAGES</a></li>
+      </ul>
+      </div>
+      <div class="navbarright">
+        <ul class="navlist">
+          {% comment %}
+
+            use "{% url 'create_player' %}"  on href
+            for namespaced views: "{% url 'namespace_on_urlspy:name_on_urlspy' %}"
+
+          {% endcomment %}
+
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'signup' %}">Signup</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

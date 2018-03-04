@@ -10,16 +10,35 @@ from league import models
 from django.contrib.auth.models import User
 
 def home(request):
-    if request.user.is_authenticated:
+    if request.method == "POST":
         race = models.Race.objects.first();
         team = models.Team.objects.get(owner=request.user, belonged_race=race)
-        budget=team.budget
-        print(budget)
-        team_players = team.selected_players.all().order_by("group", "-player__sex"); ## this returns participation objects
-        players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players)
-        return render(request, "wall.html",{"race":race,"team":team_players, "players":players_except_team, "budget": "{}".format(budget)})
+        if request.POST.get("add")=="":
+            print("ASDASDASD")
+            name = request.POST.get("name")
+            team.add_player(name)
+        if request.POST.get("remove")=="":
+            print("LLLLLLLLLLLLLLLLLLLLLL")
+            name = request.POST.get("name")
+            team.remove_player(name)
+        return redirect("home")
     else:
-        return render(request, "home.html")
+        if request.user.is_authenticated:
+            race = models.Race.objects.first()
+            try:
+                team = models.Team.objects.get(owner=request.user, belonged_race=race)
+                budget=team.budget
+                print(budget)
+                team_players = team.selected_players.all().order_by("group", "-player__sex"); ## this returns participation objects
+                players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players)
+                return render(request, "wall.html",{"race":race,"team":team_players, "players":players_except_team, "budget": "{}".format(budget)})
+            except:
+                race = models.Race.objects.first()
+                team = models.Team(owner=request.user, belonged_race=race)
+                team.save()
+                return redirect("home")
+        else:
+            return render(request, "home.html")
 
 
 def login(request):

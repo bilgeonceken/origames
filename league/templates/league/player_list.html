@@ -7,21 +7,25 @@
 
 {% block content %}
 <div class="biggerwrap">
-	<div class="card listwrap">
-		<table class="bordered striped">
+	<div class="card listwrap blue-grey lighten-5">
+		<table class="bordered">
 			<thead>
 				<tr>
 					<th>Name</th>
 					<th>Sex</th>
 					<th>Catagory</th>
+					<th>Group</th>
+					<th>Cost</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for player in players %}
-				<tr>
-					<td>{{player.name}}</td>
-					<td>{{player.sex}}</td>
-					<td>{{player.official_category}}</td>
+				<tr {% if player.group == "2" %} style="background: grey;" {% endif %}>
+					<td>{{player.player.name}}</td>
+					<td>{{player.player.sex}}</td>
+					<td>{{player.player.official_category}}</td>
+					<td>{{player.group}}</td>
+					<td>{{player.price}}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

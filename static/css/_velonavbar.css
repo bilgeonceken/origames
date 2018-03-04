@@ -1,0 +1,93 @@
+html{
+  font-family: sans-serif;
+}
+
+body{
+  margin: 0;
+}
+
+ul li a{
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto!important;
+}
+
+.banner{
+  width: 100vw;
+  background-color: #1c1c1c;
+}
+
+.bannermidwrapper{
+  max-width: 980px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.logo{
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.logo img {
+  max-height: 100px;
+  vertical-align: text-top;
+  margin: 4px auto;
+}
+
+.navbar{
+  margin: 0;
+  width: 100vw;
+  height: 50px;
+  /* background-color: #0092cf; */
+  /* background-color: lightcoral; */
+  /* background-color: #26a69a; */
+  background-color: #d32f2f;
+}
+
+.navbarmidwrapper{
+  max-width: 980px;
+  margin: 0 auto;
+}
+.navbarleft{
+  float: left;
+}
+
+.navbarright{
+  float: right;
+}
+
+.navbar ul {
+  padding: 0;
+  margin: 0;
+}
+
+.navlist > li {
+  text-decoration: none;
+  list-style: none;
+  vertical-align: baseline;
+  float: left;
+}
+
+.navlist > li {
+  padding: 15px 8px 15px 8px;
+}
+
+.navlist > li > a {
+font-size: 15px;
+color: #FFFFFF;
+text-align: left;
+text-decoration: none;
+text-transform: uppercase;
+transition: background-color, color 0.2s linear;
+}
+
+.navlist > li > a:hover {
+  /* color: red; */
+  color: lightcoral;
+}

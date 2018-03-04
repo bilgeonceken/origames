@@ -62,11 +62,24 @@ class Player(models.Model):
         ordering = ["name"]
 
 
-class Race(models.Model):
-    name = models.CharField(max_length=255)
-    # teams = models.ManyToManyField(Team)
-    players = models.ManyToManyField(Player, through="Participation", related_name="races")
-    created_at = models.DateTimeField(auto_now=True)
+class Stage(models.Model):
+    SPRINT = "Sprint"
+    MIDDLE = "Middle"
+    LONG = "Long"
+
+    DISTANCE_CHOICES = (
+        (SPRINT, "Sprint"),
+        (MIDDLE, "Middle"),
+        (LONG, "Long"),
+    )
+
+    order = models.PositiveSmallIntegerField(default=0) ## day 1, day 2 etc.
+    distance = models.CharField(
+            max_length=6,
+            choices=DISTANCE_CHOICES,
+            default=MIDDLE
+           )
+    ## durationfield stores timedelta objects
     E21E_win_time = models.DurationField(default = timedelta(seconds=0))
     K21E_win_time = models.DurationField(default = timedelta(seconds=0))
     E21A_win_time = models.DurationField(default = timedelta(seconds=0))
@@ -94,6 +107,38 @@ class Race(models.Model):
     "K55": K55_win_time
     }
 
+
+class Race(models.Model):
+    name = models.CharField(max_length=255)
+    # teams = models.ManyToManyField(Team)
+    players = models.ManyToManyField(Player, through="Participation", related_name="races")
+    created_at = models.DateTimeField(auto_now=True)
+    stages = models.ManyToManyField(Stage)
+
+    # E21E_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K21E_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # E21A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K21A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # E21B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K21B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # E20A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K20A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # E20B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K20B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
+    # K55_win_time_1  = models.DurationField(default = timedelta(seconds=0))
+    #
+    # E21E_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K21E_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # E21A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K21A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # E21B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K21B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # E20A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K20A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # E20B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K20B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
+    # K55_win_time_2  = models.DurationField(default = timedelta(seconds=0))
+
     def __str__(self):
         return self.name
 
@@ -117,8 +162,10 @@ class Participation(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     price = models.PositiveSmallIntegerField()
-    finish_time = models.DurationField(default = timedelta(seconds=0))
-    score = models.PositiveSmallIntegerField(default=0)
+    finish_time_1 = models.DurationField(default = timedelta(seconds=0))
+    score_1 = models.PositiveSmallIntegerField(default=0)
+    finish_time_2 = models.DurationField(default = timedelta(seconds=0))
+    score_2 = models.PositiveSmallIntegerField(default=0)
     group = models.CharField(
         max_length=1,
         choices=GROUP_CHOICES,
@@ -133,9 +180,48 @@ class Participation(models.Model):
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     belonged_race = models.ForeignKey(Race, on_delete=models.CASCADE)
-    selected_players = models.ManyToManyField(Participation)
+    selected_players = models.ManyToManyField(Participation, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     budget = models.PositiveSmallIntegerField(default=100)
 
+
+    def add_player(self, playername):
+        race = Race.objects.first()
+        player = Participation.objects.filter(race=race, player__name=playername)[0]
+
+        group_counts = {
+        "1":0,
+        "2":0,
+        "3":0
+        }
+
+        group_limits = {
+        "1":3,
+        "2":4,
+        "3":2
+        }
+        for p in self.selected_players.all():
+            group_counts[p.group]+=1
+
+        if group_counts[player.group] >= group_limits[player.group]:
+            print("Can't add more of the same group")
+            return
+        if self.budget >= player.price:
+            self.selected_players.add(player)
+            self.budget -= player.price
+            self.save()
+        else:
+            print("Not enough budget")
+
+    def remove_player(self, playername):
+        race = Race.objects.first()
+        player = Participation.objects.get(race=race, player__name=playername)
+        try:
+            self.selected_players.remove(player)
+        except:
+            return
+        finally:
+            self.budget += player.price
+            self.save()
     def __str__(self):
         return self.owner.username+"'s Team for "+self.belonged_race.name
