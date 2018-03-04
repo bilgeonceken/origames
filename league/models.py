@@ -11,6 +11,7 @@ class Player(models.Model):
     EXP_WOMAN_A = "K21A"
     EXP_MAN_B = "E21B"
     EXP_WOMAN_B = "K21B"
+    YOUNG_MAN_A = "E20A"
     YOUNG_WOMAN_A = "K20A"
     YOUNG_MAN_B = "E20B"
     YOUNG_WOMAN_B = "K20B"
@@ -66,6 +67,32 @@ class Race(models.Model):
     # teams = models.ManyToManyField(Team)
     players = models.ManyToManyField(Player, through="Participation", related_name="races")
     created_at = models.DateTimeField(auto_now=True)
+    E21E_win_time = models.DurationField(default = timedelta(seconds=0))
+    K21E_win_time = models.DurationField(default = timedelta(seconds=0))
+    E21A_win_time = models.DurationField(default = timedelta(seconds=0))
+    K21A_win_time = models.DurationField(default = timedelta(seconds=0))
+    E21B_win_time = models.DurationField(default = timedelta(seconds=0))
+    K21B_win_time = models.DurationField(default = timedelta(seconds=0))
+    E20A_win_time = models.DurationField(default = timedelta(seconds=0))
+    K20A_win_time = models.DurationField(default = timedelta(seconds=0))
+    E20B_win_time = models.DurationField(default = timedelta(seconds=0))
+    K20B_win_time = models.DurationField(default = timedelta(seconds=0))
+    K55_win_time  = models.DurationField(default = timedelta(seconds=0))
+
+    ##I'll try to reach finish time by querying by category names
+    wintimes = {
+    "E21E": E21E_win_time,
+    "K21E": K21E_win_time,
+    "E21A": E21A_win_time,
+    "K21A": K21A_win_time,
+    "E21B": E21B_win_time,
+    "K21B": K21B_win_time,
+    "E20A": E20A_win_time,
+    "K20A": K20A_win_time,
+    "E20B": E20B_win_time,
+    "K20B": K20B_win_time,
+    "K55": K55_win_time
+    }
 
     def __str__(self):
         return self.name
