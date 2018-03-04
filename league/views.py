@@ -35,3 +35,6 @@ class PlayersListView(generic.ListView):
 def stages(request):
     stages = models.Race.objects.first().stages.all()
     return render(request, "stages.html", {"stages": stages})
+
+def rules(request):
+    return render(request, "rules.html")
