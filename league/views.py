@@ -24,7 +24,7 @@ class PlayersListView(generic.ListView):
     ## since we want more than just a model = models.Player
     def get_queryset(self):
         race = models.Race.objects.first()
-        print(models.Participation.objects.filter(race=race))
+        # print(models.Participation.objects.filter(race=race))
         return models.Participation.objects.filter(race=race).order_by("group", "-price" ,"-player__sex")
 
     template_name = "league/player_list.html"

@@ -13,11 +13,16 @@ def home(request):
     if request.method == "POST":
         race = models.Race.objects.first();
         team = models.Team.objects.get(owner=request.user, belonged_race=race)
+
         if request.POST.get("add")=="":
+            if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 0:
+                return redirect("home")
             print("ASDASDASD")
             name = request.POST.get("name")
             team.add_player(name)
         if request.POST.get("remove")=="":
+            if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 1:
+                return redirect("home")
             print("LLLLLLLLLLLLLLLLLLLLLL")
             name = request.POST.get("name")
             team.remove_player(name)
