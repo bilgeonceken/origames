@@ -8,24 +8,36 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from league import models
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 def home(request):
     if request.method == "POST":
         race = models.Race.objects.first();
         team = models.Team.objects.get(owner=request.user, belonged_race=race)
-
         if request.POST.get("add")=="":
             if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 0:
                 return redirect("home")
-            print("ASDASDASD")
             name = request.POST.get("name")
-            team.add_player(name)
+            x = team.add_player(name)
+            if x == 0:
+                messages.success(request, "Added "+name+" successfully!")
+            elif x == 1:
+                messages.error(request, "Can't add more of the same group" )
+            else:
+                messages.error(request, "Not enough money" )
+            return redirect("home")
+
         if request.POST.get("remove")=="":
             if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 1:
                 return redirect("home")
-            print("LLLLLLLLLLLLLLLLLLLLLL")
             name = request.POST.get("name")
-            team.remove_player(name)
+            try:
+                team.remove_player(name)
+            except:
+                messages.error(request, "Can't do that" )
+            else:
+                messages.success(request, "Removed "+name+" successfully!")
+                return redirect("home")
         return redirect("home")
     else:
         if request.user.is_authenticated:
@@ -33,7 +45,6 @@ def home(request):
             try:
                 team = models.Team.objects.get(owner=request.user, belonged_race=race)
                 budget=team.budget
-                print(budget)
                 team_players = team.selected_players.all().order_by("group", "-player__sex"); ## this returns participation objects
                 players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players)
                 return render(request, "wall.html",{"race":race,"team":team_players, "players":players_except_team, "budget": "{}".format(budget)})

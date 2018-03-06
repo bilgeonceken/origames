@@ -1,6 +1,5 @@
 {% load static from staticfiles %}
 <link rel="stylesheet" href="{% static '/css/_velonavbar.css' %}">
-
 <div class="banner">
   <div class="bannermidwrapper">
     <div class="logo">
@@ -38,3 +37,10 @@
     </div>
   </div>
 </div>
+{% if messages %}
+<ul class="collection messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="collection-item {{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

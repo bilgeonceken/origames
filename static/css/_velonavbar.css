@@ -91,3 +91,12 @@ transition: background-color, color 0.2s linear;
   /* color: red; */
   color: lightcoral;
 }
+
+.error{
+  background-color: lightcoral !important;
+  color: white;
+}
+
+.success{
+  background-color: #4db6ac !important;
+}

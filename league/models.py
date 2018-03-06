@@ -185,7 +185,7 @@ class Team(models.Model):
     budget = models.PositiveSmallIntegerField(default=100)
 
 
-    def add_player(self, playername):
+    def add_player(self, playername,):
         race = Race.objects.first()
         player = Participation.objects.filter(race=race, player__name=playername)[0]
 
@@ -204,14 +204,20 @@ class Team(models.Model):
             group_counts[p.group]+=1
 
         if group_counts[player.group] >= group_limits[player.group]:
-            print("Can't add more of the same group")
-            return
+            return 1
+            # messages.add_message(request, messages.error, "Can't add more of the same group")
         if self.budget >= player.price:
             self.selected_players.add(player)
             self.budget -= player.price
             self.save()
+            return 0
+            # messages.add_message(request, messages.success, "Added "+player.player.name+"successfully!")
         else:
-            print("Not enough budget")
+            return 2
+            # raise Exception("Not enough money")
+            # messages.add_message(request, messages.error, "Not enough money")
+
+
 
     def remove_player(self, playername):
         race = Race.objects.first()
