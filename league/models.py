@@ -182,11 +182,19 @@ class Participation(models.Model):
 def update_participation_score(sender, instance, *args, **kwargs):
     if instance.finish_time_1 != 0:
         stage1 = instance.race.stages.all().get(order="1")
+        ##this returns a dic with relevant fields of like:
+        ## there are two stages of the race os 0 is the first one
+        ## {'id': 3, 'order': 1, 'distance': 'Middle', 'E21E_win_time': datetime.timedelta(0), 'K21E_win_time': datetime.timedelta(0), 'E21A_win_time': datetime.timedelta(0), 'K21A_win_time': datetime.timedelta(0), 'E21B_win_time': datetime.timedelta(0), 'K21B_win_time': datetime.timedelta(0), 'E20A_win_time': datetime.timedelta(0), 'K20A_win_time': datetime.timedelta(0), 'E20B_win_time': datetime.timedelta(0), 'K20B_win_time': datetime.timedelta(0), 'K55_win_time': datetime.timedelta(0)}
         stage1_fields_dict = instance.race.stages.values()[0]
+        ## now i can get related finish time concataneting participation object's
+        ## category and the string "_win_time"
         wintime1 = stage1_fields_dict[instance.player.official_category+"_win_time"]
+        ## i need seconds to calculate easily
         wintime1seconds = wintime1.total_seconds()
         finish_time_1seconds = instance.finish_time_1.total_seconds()
+        ## official score
         instance.score_1 = (wintime1seconds/finish_time_1seconds) * 1000
+        ## origames score
         if instance.group == 1:
             instance.score_1 *= 1
         elif instance.group == 2:
