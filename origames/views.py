@@ -5,7 +5,8 @@ from django.contrib.auth import logout as django_logout
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import UserCreationForm
+from .forms import SignUpForm
 from league import models
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -82,7 +83,7 @@ def logout(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -91,5 +92,5 @@ def signup(request):
             django_login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
