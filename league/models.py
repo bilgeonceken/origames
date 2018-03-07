@@ -180,7 +180,7 @@ class Participation(models.Model):
 
 @receiver(pre_save, sender=Participation)
 def update_participation_score(sender, instance, *args, **kwargs):
-    if instance.finish_time_1 != 0:
+    if instance.finish_time_1.total_seconds() != 0:
         stage1 = instance.race.stages.all().get(order="1")
         ##this returns a dic with relevant fields of like:
         ## there are two stages of the race os 0 is the first one
@@ -201,7 +201,7 @@ def update_participation_score(sender, instance, *args, **kwargs):
             instance.score_1 *= 0.85
         elif instance.group == 3:
             instance.score_1 *= 0.7
-    if instance.finish_time_2 != 0:
+    if instance.finish_time_2.total_seconds() != 0:
         stage2 = instance.race.stages.all().get(order="2")
         stage2_fields_dict = instance.race.stages.values()[1]
         wintime2 = stage1_fields_dict[instance.player.official_category+"_win_time"]
