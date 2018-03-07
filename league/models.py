@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
 
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 class Player(models.Model):
@@ -176,7 +178,34 @@ class Participation(models.Model):
     def __str__(self):
         return self.player.name+" Participation"
 
-
+@receiver(pre_save, sender=Participation)
+def update_participation_score(sender, instance, *args, **kwargs):
+    if instance.finish_time_1 != 0:
+        stage1 = instance.race.stages.all().get(order="1")
+        stage1_fields_dict = instance.race.stages.values()[0]
+        wintime1 = stage1_fields_dict[instance.player.official_category+"_win_time"]
+        wintime1seconds = wintime1.total_seconds()
+        finish_time_1seconds = instance.finish_time_1.total_seconds()
+        instance.score_1 = (wintime1seconds/finish_time_1seconds) * 1000
+        if instance.group == 1:
+            instance.score_1 *= 1
+        elif instance.group == 2:
+            instance.score_1 *= 0.85
+        elif instance.group == 3:
+            instance.score_1 *= 0.7
+    if instance.finish_time_2 != 0:
+        stage2 = instance.race.stages.all().get(order="2")
+        stage2_fields_dict = instance.race.stages.values()[1]
+        wintime2 = stage1_fields_dict[instance.player.official_category+"_win_time"]
+        wintime2seconds = wintime1.total_seconds()
+        finish_time_2seconds = instance.finish_time_2.total_seconds()
+        instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
+        if instance.group == 1:
+            instance.score_2 *= 1
+        elif instance.group == 2:
+            instance.score_2 *= 0.85
+        elif instance.group == 3:
+            instance.score_2 *= 0.7
 
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
