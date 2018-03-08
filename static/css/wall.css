@@ -28,7 +28,7 @@
 
 @media screen and (max-width: 886px) {
     .pagewrap {
-      width: 400px;
+      width: 367px;
     }
 }
 @media screen and (max-width: 1024px) and (min-width: 888px) {
@@ -37,12 +37,12 @@
     }
 }
 .roster{
-  width: 400px;
+  width: 367px;
   float: left;
 }
 
 .players{
-  width: 400px;
+  width: 367px;
   float: right;
 }
 .box{

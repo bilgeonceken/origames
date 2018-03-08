@@ -46,8 +46,8 @@ def home(request):
             try:
                 team = models.Team.objects.get(owner=request.user, belonged_race=race)
                 budget=team.budget
-                team_players = team.selected_players.all().order_by("group", "-player__sex"); ## this returns participation objects
-                players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players)
+                team_players = team.selected_players.all().order_by("group", "-price", "-player__sex") ## this returns participation objects
+                players_except_team = models.Participation.objects.filter(race=race).exclude(id__in=team_players).order_by("group", "-price", "-player__sex")
                 return render(request, "wall.html",{"race":race,"team":team_players, "players":players_except_team, "budget": "{}".format(budget)})
             except:
                 race = models.Race.objects.first()
