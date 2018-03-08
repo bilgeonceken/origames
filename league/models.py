@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
 
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, m2m_changed
 from django.dispatch import receiver
 
 # Create your models here.
@@ -180,6 +180,7 @@ class Participation(models.Model):
 
 @receiver(pre_save, sender=Participation)
 def update_participation_score(sender, instance, *args, **kwargs):
+    print("start")
     if instance.finish_time_1.total_seconds() != 0:
         stage1 = instance.race.stages.all().get(order="1")
         ##this returns a dic with relevant fields of like:
@@ -215,13 +216,16 @@ def update_participation_score(sender, instance, *args, **kwargs):
         elif instance.group == 3:
             instance.score_2 *= 0.7
 
+
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     belonged_race = models.ForeignKey(Race, on_delete=models.CASCADE)
     selected_players = models.ManyToManyField(Participation, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     budget = models.PositiveSmallIntegerField(default=100)
-
+    stage_1_score = models.PositiveSmallIntegerField(default=0)
+    stage_2_score = models.PositiveSmallIntegerField(default=0)
+    total_score = models.PositiveSmallIntegerField(default=0)
 
     def add_player(self, playername,):
         race = Race.objects.first()
@@ -269,3 +273,13 @@ class Team(models.Model):
             self.save()
     def __str__(self):
         return self.owner.username+"'s Team for "+self.belonged_race.name
+
+@receiver(post_save, sender=Participation)
+def update_team_score(sender, instance, *args, **kwargs):
+    for team in instance.team_set.all():
+        for player in team.selected_players.all():
+            team.stage_1_score += player.score_1
+            team.stage_2_score += player.score_2
+        team.total_score = team.stage_1_score + team.stage_2_score
+        team.save()
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
