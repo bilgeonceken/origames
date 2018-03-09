@@ -14,32 +14,33 @@ from django.contrib import messages
 def home(request):
     if request.method == "POST":
         race = models.Race.objects.first()
-        team = models.Team.objects.get(owner=request.user, belonged_race=race)
-        if request.POST.get("add")=="":
-            if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 0:
+        if race.is_active:
+            team = models.Team.objects.get(owner=request.user, belonged_race=race)
+            if request.POST.get("add")=="":
+                if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 0:
+                    return redirect("home")
+                name = request.POST.get("name")
+                x = team.add_player(name)
+                if x == 0:
+                    messages.success(request, "Added "+name+" successfully!")
+                elif x == 1:
+                    messages.error(request, "Can't add more of the same group" )
+                else:
+                    messages.error(request, "Not enough money" )
                 return redirect("home")
-            name = request.POST.get("name")
-            x = team.add_player(name)
-            if x == 0:
-                messages.success(request, "Added "+name+" successfully!")
-            elif x == 1:
-                messages.error(request, "Can't add more of the same group" )
-            else:
-                messages.error(request, "Not enough money" )
-            return redirect("home")
 
-        if request.POST.get("remove")=="":
-            if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 1:
-                return redirect("home")
-            name = request.POST.get("name")
-            try:
-                team.remove_player(name)
-            except:
-                messages.error(request, "Can't do that" )
-            else:
-                messages.success(request, "Removed "+name+" successfully!")
-                return redirect("home")
-        return redirect("home")
+            if request.POST.get("remove")=="":
+                if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 1:
+                    return redirect("home")
+                name = request.POST.get("name")
+                try:
+                    team.remove_player(name)
+                except:
+                    messages.error(request, "Can't do that" )
+                else:
+                    messages.success(request, "Removed "+name+" successfully!")
+                    return redirect("home")
+            return redirect("home")
     else:
         if request.user.is_authenticated:
             race = models.Race.objects.first()
@@ -56,7 +57,7 @@ def home(request):
                 return redirect("home")
         else:
             return render(request, "home.html")
-
+    redirect("home")
 
 def login(request):
     if request.method=="POST":

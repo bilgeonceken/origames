@@ -38,11 +38,13 @@ function dragstart_handler(ev) {
   <div class="rosterwrap">
   {% for player in team %}
   <div class="box" id="p1" draggable="true" {% if player.group == "1" %}style="border: 1px solid lightcoral"{% endif %} {% if player.group == "2" %}style="border: 1px solid skyblue"{% endif %} {% if player.group == "3" %}style="border: 1px solid #BDB76B"{% endif %} ondragstart="dragstart_handler(event);">
+    {% if race.is_active %}
     <form action="" method="post">
       {% csrf_token %}
       <input type="hidden" name="name" value="{{player.player.name}}">
       <input class="remove" type="Submit" name="remove" value=""/>
     </form>
+    {% endif %}
     <div class="left f">
     <div class="name">
 
@@ -74,12 +76,14 @@ function dragstart_handler(ev) {
   <div class="rosterwrap">
   {% for player in players %}
   <div class="box" id="p1" draggable="true" {% if player.group == "1" %}style="border: 1px solid lightcoral"{% endif %} {% if player.group == "2" %}style="border: 1px solid skyblue"{% endif %} {% if player.group == "3" %}style="border: 1px solid #BDB76B"{% endif %} ondragstart="dragstart_handler(event);">
+  {% if race.is_active %}
     <button class="add"></button>
     <form action="" method="post">
       {% csrf_token %}
       <input type="hidden" name="name" value="{{player.player.name}}">
       <input class="add" type="Submit" name="add" value=""/>
     </form>
+    {% endif %}
     <div class="left f">
     <div class="name">
       {{player.player.name}}
