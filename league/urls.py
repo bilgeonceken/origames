@@ -8,6 +8,6 @@ urlpatterns = [
     path("players/create_player", views.PlayerCreateView.as_view(), name="create_player"),
     path("stages", views.stages, name="stages"),
     path("rules", views.rules, name="rules"),
-    path("results2", views.results, name="results"),
+    path("results", views.results, name="results"),
     # path("create_player", views.create_player, name="create_player"),
 ]
