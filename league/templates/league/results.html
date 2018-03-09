@@ -1,0 +1,79 @@
+{% extends "_base.html" %}
+{% load static from staticfiles %}
+
+{% block localstatic %}
+<link rel="stylesheet" href="{% static '/league/css/results.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Results
+{% endblock %}
+
+{% block content %}
+<div class="biggerwrap">
+<div class="card listwrap blue-grey lighten-5">
+  <ul id="tabs-swipe-demo" class="tabs">
+    <li class="tab col s3"><a class="active"  href="#test-swipe-1">Team Scores</a></li>
+    <li class="tab col s3"><a href="#test-swipe-4">Runner Scores</a></li>
+  </ul>
+
+  <div id="test-swipe-1" class="col s12">
+
+		<table class="fold-table">
+		  <thead>
+		    <tr>
+		      <th>Name</th>
+					<th>Day 1 Score</th>
+					<th>Day 2 Score</th>
+					<th>Total Score</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+				{% for team in teams %}
+		    <tr class="view">
+		      <td class="uppercase"><i class="material-icons">chevron_right</i><span class="num"></span>{{team.owner.first_name}} {{ team.owner.last_name }}</td>
+		      <td>{{team.stage_1_score}}</td>
+		      <td>{{team.stage_2_score}}</td>
+		      <td class="total">{{team.total_score}}</td>
+		    </tr>
+		    <tr class="fold">
+		      <td colspan="7">
+		        <div class="fold-content">
+		          <h4><span class="uppercase">{{team.owner.first_name}}</span>'s Team</h4>
+		          <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p> -->
+		          <table>
+		            <thead>
+		              <tr>
+		                <th>Player Name</th>
+										<th>Category</th>
+										<th>Group</th>
+										<th>Day 1 Score</th>
+										<th>Day 2 Score</th>
+										<th>Total Score</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+									{% for partic in team.selected_players.all %}
+		              <tr>
+		                <td>{{partic.player.name}}</td>
+		                <td>{{partic.player.official_category}}</td>
+		                <td>{{partic.group}}</td>
+		                <td>{{partic.score_1}}</td>
+		                <td>{{partic.score_2}}</td>
+		                <td>{{partic.total_score}}</td>
+		              </tr>
+									{% endfor %}
+		            </tbody>
+		          </table>
+		        </div>
+		      </td>
+		    </tr>
+				{% endfor %}
+		  </tbody>
+		</table>
+	 </table>
+
+</div>
+<script src="{% static '/league/js/script.js' %}" charset="utf-8"></script>
+{% endblock %}
