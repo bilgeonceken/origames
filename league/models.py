@@ -106,6 +106,7 @@ class Race(models.Model):
     players = models.ManyToManyField(Player, through="Participation", related_name="races")
     created_at = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(Stage)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -134,6 +135,7 @@ class Participation(models.Model):
     score_1 = models.PositiveSmallIntegerField(default=0)
     finish_time_2 = models.DurationField(default = timedelta(seconds=0))
     score_2 = models.PositiveSmallIntegerField(default=0)
+    total_score = models.PositiveSmallIntegerField(default=0)
     group = models.CharField(
         max_length=1,
         choices=GROUP_CHOICES,
@@ -164,11 +166,14 @@ def update_participation_score(sender, instance, *args, **kwargs):
             ## official score
             instance.score_1 = (wintime1seconds/finish_time_1seconds) * 1000
             ## origames score
-            if instance.group == 1:
+            if instance.group == "1":
                 instance.score_1 *= 1
-            elif instance.group == 2:
+                print("birinci grup")
+            elif instance.group == "2":
                 instance.score_1 *= 0.85
-            elif instance.group == 3:
+                print("ikinci grup")
+            elif instance.group == "3":
+                print("üçüncü grup")
                 instance.score_1 *= 0.7
         else:
             instance.score_1 = 0
@@ -182,14 +187,18 @@ def update_participation_score(sender, instance, *args, **kwargs):
         finish_time_2seconds = instance.finish_time_2.total_seconds()
         if finish_time_1seconds <= disqualification_time_seconds:
             instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
-            if instance.group == 1:
+            if instance.group == "1":
+                print("birinci grup")
                 instance.score_2 *= 1
-            elif instance.group == 2:
+            elif instance.group == "2":
                 instance.score_2 *= 0.85
-            elif instance.group == 3:
+                print("ikinci grup")
+            elif instance.group == "3":
+                print("üçüncü grup")
                 instance.score_2 *= 0.7
         else:
             instance.score_2 = 0
+    instance.total_score = instance.score_1 + instance.score_2
 
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -251,9 +260,12 @@ class Team(models.Model):
 @receiver(post_save, sender=Participation)
 def update_team_score(sender, instance, *args, **kwargs):
     for team in instance.team_set.all():
+        team.stage_1_score = 0
+        team.stage_2_score = 0
+        team.total_score = 0
         for player in team.selected_players.all():
             team.stage_1_score += player.score_1
             team.stage_2_score += player.score_2
-        team.total_score = team.stage_1_score + team.stage_2_score
+            team.total_score += player.total_score
         team.save()
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")

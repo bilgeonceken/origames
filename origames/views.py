@@ -13,7 +13,7 @@ from django.contrib import messages
 
 def home(request):
     if request.method == "POST":
-        race = models.Race.objects.first();
+        race = models.Race.objects.first()
         team = models.Team.objects.get(owner=request.user, belonged_race=race)
         if request.POST.get("add")=="":
             if team.selected_players.all().filter(player__name=request.POST.get("name")).count() != 0:
