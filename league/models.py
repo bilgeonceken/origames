@@ -82,6 +82,10 @@ class Stage(models.Model):
             choices=DISTANCE_CHOICES,
             default=MIDDLE
            )
+
+
+    disqualification_time = models.DurationField(default = timedelta(seconds=0))
+
     ## durationfield stores timedelta objects
     E21E_win_time = models.DurationField(default = timedelta(seconds=0))
     K21E_win_time = models.DurationField(default = timedelta(seconds=0))
@@ -95,21 +99,6 @@ class Stage(models.Model):
     K20B_win_time = models.DurationField(default = timedelta(seconds=0))
     K55_win_time  = models.DurationField(default = timedelta(seconds=0))
 
-    ##I'll try to reach finish time by querying by category names
-    wintimes = {
-    "E21E": E21E_win_time,
-    "K21E": K21E_win_time,
-    "E21A": E21A_win_time,
-    "K21A": K21A_win_time,
-    "E21B": E21B_win_time,
-    "K21B": K21B_win_time,
-    "E20A": E20A_win_time,
-    "K20A": K20A_win_time,
-    "E20B": E20B_win_time,
-    "K20B": K20B_win_time,
-    "K55": K55_win_time
-    }
-
 
 class Race(models.Model):
     name = models.CharField(max_length=255)
@@ -117,30 +106,6 @@ class Race(models.Model):
     players = models.ManyToManyField(Player, through="Participation", related_name="races")
     created_at = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(Stage)
-
-    # E21E_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K21E_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # E21A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K21A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # E21B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K21B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # E20A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K20A_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # E20B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K20B_win_time_1 = models.DurationField(default = timedelta(seconds=0))
-    # K55_win_time_1  = models.DurationField(default = timedelta(seconds=0))
-    #
-    # E21E_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K21E_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # E21A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K21A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # E21B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K21B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # E20A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K20A_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # E20B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K20B_win_time_2 = models.DurationField(default = timedelta(seconds=0))
-    # K55_win_time_2  = models.DurationField(default = timedelta(seconds=0))
 
     def __str__(self):
         return self.name
@@ -189,33 +154,42 @@ def update_participation_score(sender, instance, *args, **kwargs):
         stage1_fields_dict = instance.race.stages.values()[0]
         ## now i can get related finish time concataneting participation object's
         ## category and the string "_win_time"
+        disqualification_time = stage1_fields_dict["disqualification_time"]
+        disqualification_time_seconds = disqualification_time.total_seconds()
         wintime1 = stage1_fields_dict[instance.player.official_category+"_win_time"]
         ## i need seconds to calculate easily
         wintime1seconds = wintime1.total_seconds()
         finish_time_1seconds = instance.finish_time_1.total_seconds()
-        ## official score
-        instance.score_1 = (wintime1seconds/finish_time_1seconds) * 1000
-        ## origames score
-        if instance.group == 1:
-            instance.score_1 *= 1
-        elif instance.group == 2:
-            instance.score_1 *= 0.85
-        elif instance.group == 3:
-            instance.score_1 *= 0.7
+        if finish_time_1seconds <= disqualification_time_seconds:
+            ## official score
+            instance.score_1 = (wintime1seconds/finish_time_1seconds) * 1000
+            ## origames score
+            if instance.group == 1:
+                instance.score_1 *= 1
+            elif instance.group == 2:
+                instance.score_1 *= 0.85
+            elif instance.group == 3:
+                instance.score_1 *= 0.7
+        else:
+            instance.score_1 = 0
     if instance.finish_time_2.total_seconds() != 0:
         stage2 = instance.race.stages.all().get(order="2")
         stage2_fields_dict = instance.race.stages.values()[1]
+        disqualification_time = stage2_fields_dict["disqualification_time"]
+        disqualification_time_seconds = disqualification_time.total_seconds()
         wintime2 = stage1_fields_dict[instance.player.official_category+"_win_time"]
         wintime2seconds = wintime1.total_seconds()
         finish_time_2seconds = instance.finish_time_2.total_seconds()
-        instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
-        if instance.group == 1:
-            instance.score_2 *= 1
-        elif instance.group == 2:
-            instance.score_2 *= 0.85
-        elif instance.group == 3:
-            instance.score_2 *= 0.7
-
+        if finish_time_1seconds <= disqualification_time_seconds:
+            instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
+            if instance.group == 1:
+                instance.score_2 *= 1
+            elif instance.group == 2:
+                instance.score_2 *= 0.85
+            elif instance.group == 3:
+                instance.score_2 *= 0.7
+        else:
+            instance.score_2 = 0
 
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

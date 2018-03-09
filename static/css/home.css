@@ -1,6 +1,6 @@
 header {
   height: 100vh;
-  background-image: url("/static/images/bg-nature.jpeg");
+  background-image: url("/static/images/home.jpg");
 
   /*background-image: url(https://unsplash.imgix.net/photo-1414490929659-9a12b7e31907);*/
   background-size: cover;
