@@ -38,3 +38,8 @@ def stages(request):
 
 def rules(request):
     return render(request, "rules.html")
+
+def results(request):
+    race = models.Race.objects.first()
+    teams = models.Team.objects.filter(belonged_race=race).order_by("-total_score")
+    return render(request, "league/results.html", {"teams": teams})
