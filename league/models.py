@@ -147,7 +147,6 @@ class Participation(models.Model):
 
 @receiver(pre_save, sender=Participation)
 def update_participation_score(sender, instance, *args, **kwargs):
-    print("start")
     if instance.finish_time_1.total_seconds() != 0:
         stage1 = instance.race.stages.all().get(order="1")
         ##this returns a dic with relevant fields of like:
@@ -168,12 +167,9 @@ def update_participation_score(sender, instance, *args, **kwargs):
             ## origames score
             if instance.group == "1":
                 instance.score_1 *= 1
-                print("birinci grup")
             elif instance.group == "2":
                 instance.score_1 *= 0.85
-                print("ikinci grup")
             elif instance.group == "3":
-                print("üçüncü grup")
                 instance.score_1 *= 0.7
         else:
             instance.score_1 = 0
@@ -188,13 +184,10 @@ def update_participation_score(sender, instance, *args, **kwargs):
         if finish_time_1seconds <= disqualification_time_seconds:
             instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
             if instance.group == "1":
-                print("birinci grup")
                 instance.score_2 *= 1
             elif instance.group == "2":
                 instance.score_2 *= 0.85
-                print("ikinci grup")
             elif instance.group == "3":
-                print("üçüncü grup")
                 instance.score_2 *= 0.7
         else:
             instance.score_2 = 0
@@ -268,4 +261,3 @@ def update_team_score(sender, instance, *args, **kwargs):
             team.stage_2_score += player.score_2
             team.total_score += player.total_score
         team.save()
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
