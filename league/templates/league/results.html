@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
 {% load static from staticfiles %}
+{% load humanize %}
 
 {% block localstatic %}
 <link rel="stylesheet" href="{% static '/league/css/results.css' %}">
@@ -83,6 +84,8 @@ Results
 							<th>Day 1 Score</th>
 							<th>Day 2 Score</th>
 							<th>Total Score</th>
+							<th>Price</th>
+							<th>Score/Price</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,6 +97,8 @@ Results
 							<td>{{part.score_1}}</td>
 							<td>{{part.score_2}}</td>
 							<td class="total">{{part.total_score}}</td>
+							<td>{{part.price}}</td>
+              <td>{{part.fp|floatformat:2|intcomma}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>

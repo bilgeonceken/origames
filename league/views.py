@@ -43,4 +43,6 @@ def results(request):
     race = models.Race.objects.first()
     teams = models.Team.objects.filter(belonged_race=race).order_by("-total_score")
     participations = models.Participation.objects.filter(race=race).order_by("-total_score")
+    for i in participations:
+        i.fp = i.total_score/i.price
     return render(request, "league/results.html", {"teams": teams, "participations": participations})
