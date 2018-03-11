@@ -179,7 +179,7 @@ def update_participation_score(sender, instance, *args, **kwargs):
         disqualification_time = stage2_fields_dict["disqualification_time"]
         disqualification_time_seconds = disqualification_time.total_seconds()
         wintime2 = stage2_fields_dict[instance.player.official_category+"_win_time"]
-        wintime2seconds = wintime1.total_seconds()
+        wintime2seconds = wintime2.total_seconds()
         finish_time_2seconds = instance.finish_time_2.total_seconds()
         if finish_time_2seconds <= disqualification_time_seconds:
             instance.score_2 = (wintime2seconds/finish_time_2seconds) * 1000
