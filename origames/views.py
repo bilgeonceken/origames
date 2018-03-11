@@ -42,6 +42,7 @@ def home(request):
                     return redirect("home")
             return redirect("home")
     else:
+        return redirect("league/results")
         if request.user.is_authenticated:
             race = models.Race.objects.first()
             try:
