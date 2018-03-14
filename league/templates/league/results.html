@@ -5,6 +5,7 @@
 {% block localstatic %}
 <link rel="stylesheet" href="{% static '/league/css/results.css' %}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script type="text/javascript" src="{% static '/js/jquery.tablesorter.js' %}"></script>
 {% endblock %}
 
 {% block title %}
@@ -20,7 +21,7 @@ Results
   </ul>
 
   <div id="test-swipe-1" class="col s12">
-		<table class="fold-table">
+		<table id="myTable1" class="fold-table">
 		  <thead>
 		    <tr>
 		      <th>Name</th>
@@ -75,7 +76,7 @@ Results
 	 </table>
 </div>
   <div id="test-swipe-2" class="col s12">
-				<table class="bordered">
+				<table id="myTable2" class="bordered">
 					<thead>
 						<tr>
 							<th>Name</th>
