@@ -6,7 +6,6 @@ $(function(){
 
 $(document).ready(function()
     {
-        $("#myTable1").tablesorter();
         $("#myTable2").tablesorter();
     }
 );
