@@ -116,7 +116,7 @@ table tr > td:first-child
   font-weight: bold;
 }
 
-.num:after{
+.num:before{
     content: counter(rowNumber);
     min-width: 1em;
     margin-right: 0.5em;
@@ -133,9 +133,18 @@ table tr > td:first-child
         font-weight: bold;
 }
 
-
-
 .total{
   font-weight:bold;
   color: skyblue;
+}
+
+
+
+th.header{
+  padding-left: 17px;
+  background-image: url(/static/images/unsorted.gif);
+  cursor: pointer;
+  font-weight: bold;
+  background-repeat: no-repeat;
+  background-position: center left;
 }
