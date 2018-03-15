@@ -140,11 +140,31 @@ table tr > td:first-child
 
 
 
-th.header{
+.notsorted{
   padding-left: 17px;
   background-image: url(/static/images/unsorted.gif);
   cursor: pointer;
   font-weight: bold;
   background-repeat: no-repeat;
   background-position: center left;
+}
+
+#myTable2 thead tr >  th.descend{
+  background-image: image();
+}
+#myTable2 thead tr >  th.descend:after{
+
+  content:"\25B2"
+}
+#myTable2 thead tr >  th.ascend{
+  background-image: none;
+}
+#myTable2 thead tr >  th.ascend:after{
+  /* padding-left: 17px;
+  background-image: url(/static/images/unsorted.gif);
+  cursor: pointer;
+  font-weight: bold;
+  background-repeat: no-repeat;
+  background-position: center left; */
+  content:"\25BC";
 }

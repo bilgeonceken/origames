@@ -4,8 +4,8 @@ $(function(){
   });
 });
 
-$(document).ready(function()
-    {
-        $("#myTable2").tablesorter();
-    }
-);
+function init() {
+  var sorter = tsorter.create('myTable2');
+}
+
+window.onload = init;
