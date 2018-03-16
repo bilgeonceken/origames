@@ -13,6 +13,8 @@ Results
 {% endblock %}
 
 {% block content %}
+
+</style>
 <div class="biggerwrap">
 <div class="card listwrap blue-grey lighten-5">
   <ul id="tabs-swipe-demo" class="tabs">
@@ -43,7 +45,7 @@ Results
 		        <div class="fold-content">
 		          <h4><span class="uppercase">{{team.owner.first_name}}</span>'s Team</h4>
 		          <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p> -->
-		          <table class="bordered minwidth">
+		          <tableclass="bordered minwidth">
 		            <thead>
 		              <tr>
 		                <th>Player Name</th>
@@ -76,11 +78,11 @@ Results
 	 </table>
 </div>
   <div id="test-swipe-2" class="col s12">
-				<table id="myTable2" class="bordered">
+				<table id="myTable2" class="tablesorter bordered">
 					<thead>
 						<tr>
-							<th class="notsorted">Name</th>
-							<!-- <th class="notsorted">Category</th> -->
+							<th class="">Name</th>
+							<!-- <th class="">Category</th> -->
 							<th class="notsorted">Group</th>
 							<th class="notsorted">Day 1 Score</th>
 							<th class="notsorted">Day 2 Score</th>
@@ -89,13 +91,16 @@ Results
 					</thead>
 					<tbody>
 						{% for part in participations %}
-						<tr {% if part.group == "1" %} style="border: 2px solid lightcoral" {% endif %} {% if part.group == "2" %} style="border: 2px solid skyblue;" {% endif %} {% if part.group == "3" %} style="border: 2px solid #BDB76B" {% endif %}>
+
+						<tr {% if part.group == "1" %} class="group1" {% endif %}
+                {% if part.group == "2" %} class="group2" {% endif %}
+                {% if part.group == "3" %} class="group3" {% endif %}>
 							<td class="numbefore">{{part.player.name}}</td>
 							<!-- <td>{{part.player.official_category}}</td> -->
 							<td>{{part.group}}</td>
 							<td>{{part.score_1}}</td>
 							<td>{{part.score_2}}</td>
-							<td data-tsorter="numeric" class="total">{{part.total_score}}</td>
+              <td>{{part.total_score}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>

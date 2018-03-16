@@ -138,7 +138,17 @@ table tr > td:first-child
   color: skyblue;
 }
 
+.group1{
+  border: 2px solid lightcoral;
+}
 
+.group2{
+  border: 2px solid skyblue;
+}
+
+.group3{
+  border: 2px solid #BDB76B;
+}
 
 .notsorted{
   padding-left: 17px;
@@ -147,24 +157,4 @@ table tr > td:first-child
   font-weight: bold;
   background-repeat: no-repeat;
   background-position: center left;
-}
-
-#myTable2 thead tr >  th.descend{
-  background-image: image();
-}
-#myTable2 thead tr >  th.descend:after{
-
-  content:"\25B2"
-}
-#myTable2 thead tr >  th.ascend{
-  background-image: none;
-}
-#myTable2 thead tr >  th.ascend:after{
-  /* padding-left: 17px;
-  background-image: url(/static/images/unsorted.gif);
-  cursor: pointer;
-  font-weight: bold;
-  background-repeat: no-repeat;
-  background-position: center left; */
-  content:"\25BC";
 }
