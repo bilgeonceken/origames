@@ -2,7 +2,14 @@
 Fantasy Orienteering League App
 
 ### TODO:
-no todo
+- [ ] User agreement
+- [ ] Login error text
+- [ ] Recover password
+- [ ] Create separate view for team selection, just redirect from home.
+- [ ] Create "if race, show button" kind of logic on player select so that it can work without a race on the database
+- [ ] Create new model for storing old race result data, create a view and write a script for transferring current race data to result data.
+- [ ] Fix score calculation mechanism, try to make it more robust and maybe create a view for it so that people can do it without admin panel.
+
 
 notes to self:
 to avoid integrity error when loading dumped data:
