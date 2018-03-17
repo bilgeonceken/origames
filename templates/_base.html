@@ -3,28 +3,31 @@
 
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	  <script src="{% static '/js/jquery.js' %}"></script>
+		<link rel="stylesheet" href="{% static '/css/materialize.css' %}">
+		<link rel="stylesheet" href="{% static '/css/base.css' %}">
+		<script src="{% static '/js/materialize.js' %}"></script>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115917227-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="{% static '/js/jquery.js' %}"></script>
-	<link rel="stylesheet" href="{% static '/css/materialize.css' %}">
-	<link rel="stylesheet" href="{% static '/css/base.css' %}">
-	<script src="{% static '/js/materialize.js' %}"></script>
+		  gtag('config', 'UA-115917227-1');
+		</script>
+	  {% block localstatic %}{% endblock %}
 
-  {% block localstatic %}{% endblock %}
-
-	<title>{% block title %}{% endblock %}</title>
-</head>
-
-<body>
-	{% include "_velonavbar.html" %}
-
-<div class="contentwrapper">
-{% block content %}{% endblock %}
-</div>
-
-</body>
-
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+		{% include "_velonavbar.html" %}
+		<div class="contentwrapper">
+		{% block content %}{% endblock %}
+		</div>
+	</body>
 </html>
