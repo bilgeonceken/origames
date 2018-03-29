@@ -9,6 +9,7 @@ Fantasy Orienteering League App
 - [ ] Create "if race, show button" kind of logic on player select so that it can work without a race on the database
 - [ ] Create new model for storing old race result data, create a view and write a script for transferring current race data to result data.
 - [ ] Fix score calculation mechanism, try to make it more robust and maybe create a view for it so that people can do it without admin panel.
+- [ ] currently, static files for league app sits in /static/league. However it must be /league/static/league. This is intentional since I don't have to define a separate location for static files in nginx conf. and run "python3 manage.py collectstatic" on every update on the repository. Consider doing these things the right way.
 
 
 #### notes to myself:  
