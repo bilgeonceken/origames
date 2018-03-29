@@ -24,6 +24,9 @@ function dragstart_handler(ev) {
   <div class="row">
     <div class="col s12">
       <h4 class="white-text">{{ race.name }}</h1>
+      {% if not race.is_active %}
+      <h4 class="red-text">THE RACE HAS ENDED. YOU CAN SEE THE RESULTS</h1>
+        {% endif %}
     </div>
   </div>
 
