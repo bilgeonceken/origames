@@ -44,6 +44,6 @@ def rules(request):
 @login_required
 def results(request):
     race = models.Race.objects.first()
-    teams = models.Team.objects.filter(belonged_race=race).order_by("-total_score")
+    teams = models.Team.objects.filter(belonged_race=race, total_score__gt=0).order_by("-total_score")
     participations = models.Participation.objects.filter(race=race).order_by("-total_score")
     return render(request, "league/results.html", {"teams": teams, "participations": participations})
