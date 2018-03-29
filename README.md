@@ -18,5 +18,6 @@ python3 manage.py dumpdata --exclude auth.Permission --exclude contenttypes > fi
 ```
 
 query annotating how many times a player is selected by users:
-``` models.Participation.objects.annotate(num_selected=Count("team")).order_by("group","-num_selected")
+```
+ models.Participation.objects.annotate(num_selected=Count("team")).order_by("group","-num_selected")
 ```
