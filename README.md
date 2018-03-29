@@ -11,7 +11,7 @@ Fantasy Orienteering League App
 - [ ] Fix score calculation mechanism, try to make it more robust and maybe create a view for it so that people can do it without admin panel.
 
 
-notes to self:
+#### notes to myself:  
 to avoid integrity error when loading dumped data:
 ```
 python3 manage.py dumpdata --exclude auth.Permission --exclude contenttypes > fixture.json
