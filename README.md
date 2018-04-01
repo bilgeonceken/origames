@@ -1,6 +1,10 @@
 # origames
 Fantasy Orienteering League App
 
+<img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/welcome.png" width="82"> <img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/login.png" width="82"> <img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/signup.png" width="82"> <img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/results.png" width="82"> <img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/rules.png" width="82"> <img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/stages.png" width="82">
+
+<img src="https://github.com/bilgeonceken/origames/blob/master/screenshots/playerdraft.png" width="520">
+
 ### TODO:
 - [ ] User agreement
 - [ ] Login error text
