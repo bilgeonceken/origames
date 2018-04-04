@@ -24,7 +24,8 @@ Player List
 			</thead>
 			<tbody>
 				{% for player in players %}
-				<tr {% if player.group == "2" %} style="background: grey;" {% endif %}>
+				<tr {% if player.group == "2" %} style="background: grey;" {% endif %}
+				    {% if player.group == "4" %} style="background: grey;" {% endif %}>
 					<td>{{player.player.name}}</td>
 					<td>{{player.player.sex}}</td>
 					<td>{{player.player.official_category}}</td>
