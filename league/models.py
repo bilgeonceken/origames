@@ -120,11 +120,13 @@ class Participation(models.Model):
     GROUP_1 = "1"
     GROUP_2 = "2"
     GROUP_3 = "3"
+    GROUP_4 = "4"
 
     GROUP_CHOICES = (
         (GROUP_1, "1"),
         (GROUP_2, "2"),
         (GROUP_3, "3"),
+        (GROUP_4, "4"),
     )
 
 
@@ -135,6 +137,8 @@ class Participation(models.Model):
     score_1 = models.PositiveSmallIntegerField(default=0)
     finish_time_2 = models.DurationField(default = timedelta(seconds=0))
     score_2 = models.PositiveSmallIntegerField(default=0)
+    finish_time_3 = models.DurationField(default = timedelta(seconds=0))
+    score_3 = models.PositiveSmallIntegerField(default=0)
     total_score = models.PositiveSmallIntegerField(default=0)
     group = models.CharField(
         max_length=1,
@@ -170,7 +174,9 @@ def update_participation_score(sender, instance, *args, **kwargs):
             elif instance.group == "2":
                 instance.score_1 *= 0.85
             elif instance.group == "3":
-                instance.score_1 *= 0.7
+                instance.score_1 *= 0.75
+            elif instance.group == "4":
+                instance.score_1 *= 1.25
         else:
             instance.score_1 = 0
     if instance.finish_time_2.total_seconds() != 0:
@@ -188,19 +194,43 @@ def update_participation_score(sender, instance, *args, **kwargs):
             elif instance.group == "2":
                 instance.score_2 *= 0.85
             elif instance.group == "3":
-                instance.score_2 *= 0.7
+                instance.score_2 *= 0.75
+            elif instance.group == "4":
+                instance.score_2 *= 1.25
         else:
             instance.score_2 = 0
-    instance.total_score = instance.score_1 + instance.score_2
+
+    if instance.finish_time_3.total_seconds() != 0:
+        stage3 = instance.race.stages.all().get(order="3")
+        stage3_fields_dict = instance.race.stages.values()[2]
+        disqualification_time = stage3_fields_dict["disqualification_time"]
+        disqualification_time_seconds = disqualification_time.total_seconds()
+        wintime3 = stage3_fields_dict[instance.player.official_category+"_win_time"]
+        wintime3seconds = wintime3.total_seconds()
+        finish_time_3seconds = instance.finish_time_3.total_seconds()
+        if finish_time_3seconds <= disqualification_time_seconds:
+            instance.score_3 = (wintime3seconds/finish_time_3seconds) * 1000
+            if instance.group == "1":
+                instance.score_3 *= 1
+            elif instance.group == "2":
+                instance.score_3 *= 0.85
+            elif instance.group == "3":
+                instance.score_3 *= 0.75
+            elif instance.group == "4":
+                instance.score_3 *= 1.25
+        else:
+            instance.score_3 = 0
+    instance.total_score = instance.score_1 + instance.score_2 + instance.score_3
 
 class Team(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     belonged_race = models.ForeignKey(Race, on_delete=models.CASCADE)
     selected_players = models.ManyToManyField(Participation, blank=True)
     created_at = models.DateTimeField(auto_now=True)
-    budget = models.PositiveSmallIntegerField(default=100)
+    budget = models.PositiveSmallIntegerField(default=90)
     stage_1_score = models.PositiveSmallIntegerField(default=0)
     stage_2_score = models.PositiveSmallIntegerField(default=0)
+    stage_3_score = models.PositiveSmallIntegerField(default=0)
     total_score = models.PositiveSmallIntegerField(default=0)
 
     def add_player(self, playername,):
@@ -210,13 +240,15 @@ class Team(models.Model):
         group_counts = {
         "1":0,
         "2":0,
-        "3":0
+        "3":0,
+        "4":0
         }
 
         group_limits = {
-        "1":3,
-        "2":4,
-        "3":2
+        "1":2,
+        "2":2,
+        "3":2,
+        "4":2
         }
         for p in self.selected_players.all():
             group_counts[p.group]+=1
@@ -255,9 +287,11 @@ def update_team_score(sender, instance, *args, **kwargs):
     for team in instance.team_set.all():
         team.stage_1_score = 0
         team.stage_2_score = 0
+        team.stage_3_score = 0
         team.total_score = 0
         for player in team.selected_players.all():
             team.stage_1_score += player.score_1
             team.stage_2_score += player.score_2
+            team.stage_3_score += player.score_3
             team.total_score += player.total_score
         team.save()
