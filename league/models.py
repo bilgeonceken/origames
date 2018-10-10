@@ -183,7 +183,7 @@ class Team(models.Model):
     belonged_race = models.ForeignKey(Race, on_delete=models.CASCADE)
     selected_players = models.ManyToManyField(Participation, blank=True)
     created_at = models.DateTimeField(auto_now=True)
-    budget = models.PositiveSmallIntegerField(default=90)
+    budget = models.PositiveSmallIntegerField(default=100)
     stage_1_score = models.PositiveSmallIntegerField(default=0)
     stage_2_score = models.PositiveSmallIntegerField(default=0)
     stage_3_score = models.PositiveSmallIntegerField(default=0)
