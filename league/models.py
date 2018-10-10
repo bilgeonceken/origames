@@ -213,7 +213,7 @@ class Team(models.Model):
 
         # if group_counts[player.group] >= group_limits[player.group]:
         #     return 1
-        if (group_counts["1"] <= group_limits["1"]
+        if not (group_counts["1"] <= group_limits["1"]
                 and group_counts["2"] <= group_limits["2"]):
             return 1
             # messages.add_message(request, messages.error, "Can't add more of the same group")
