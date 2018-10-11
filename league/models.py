@@ -207,18 +207,26 @@ class Team(models.Model):
             "2": 3,
         }
 
+        pg = 0
+        npg = 0
+        if player.group == "1":
+            pg = "1"
+            npg = "2"
+        else:
+            pg = "2"
+            npg = "1"
+
         ## get group counts to check if the group is full or not later
         for p in self.selected_players.all():
             group_counts[p.group] += 1
 
-        # if group_counts[player.group] >= group_limits[player.group]:
-        #     return 1
-        if not (group_counts["1"] <= group_limits["1"] + 1
-                and group_counts["2"] <= group_limits["2"]) or (
-                    group_counts["2"] <= group_limits["2"] + 1
-                    and group_counts["1"] <= group_limits["1"]):
+        if (group_counts[pg] == group_limits[pg] + 1):
             return 1
-            # messages.add_message(request, messages.error, "Can't add more of the same group")
+        if (group_counts[pg] == group_limits[pg]):
+            if group_counts[npg] == group_limits[npg] + 1:
+                return 1
+
+        # messages.add_message(request, messages.error, "Can't add more of the same group")
         if self.budget >= player.price:
             self.selected_players.add(player)
             self.budget -= player.price
@@ -250,9 +258,11 @@ def update_team_score(sender, instance, *args, **kwargs):
     for team in instance.team_set.all():
         team.stage_1_score = 0
         team.stage_2_score = 0
+        team.stage_3_score = 0
         team.total_score = 0
         for player in team.selected_players.all():
             team.stage_1_score += player.score_1
             team.stage_2_score += player.score_2
+            team.stage_3_score += player.score_3
             team.total_score += player.total_score
         team.save()
