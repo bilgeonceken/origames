@@ -35,6 +35,7 @@ class Player(models.Model):
         (YOUNG_MAN_B, "E20B"),
         (YOUNG_WOMAN_B, "K20B"),
         (OLD_WOMAN, "K55"),
+	(YOUNG_MAN_A, "E20A")
     )
 
     SEX_CHOICES = (
