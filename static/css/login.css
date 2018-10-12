@@ -1,20 +1,25 @@
-.formwrap{
+.formwrap {
   width: 300px;
   display: block;
   border-radius: 3px;
   margin: 0 auto;
   margin-top: 90px;
   padding: 25px;
-  box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14);
   /* border: 2px solid lightcoral; */
-  border: 2px solid #3995ba;
+  border: 2px solid #ff6a00;
 }
 
 .formwrap button {
   display: block;
   margin: 0 auto;
+  background-color: #ff6a00;
 }
 
-.newacc{
+.newacc {
   margin-top: 10px;
+}
+
+a {
+  color: #ff6a00;
 }
