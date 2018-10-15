@@ -24,19 +24,13 @@ class Player(models.Model):
     MALE = "M"
     FEMALE = "F"
 
-    CATEGORY_CHOICES = (
-        (ELITE_MAN, "E21E"),
-        (ELITE_WOMAN, "K21E"),
-        (EXP_MAN_A, "E21A"),
-        (EXP_WOMAN_A, "K21A"),
-        (EXP_MAN_B, "E21B"),
-        (EXP_WOMAN_B, "K21B"),
-        (YOUNG_WOMAN_A, "K20A"),
-        (YOUNG_MAN_B, "E20B"),
-        (YOUNG_WOMAN_B, "K20B"),
-        (OLD_WOMAN, "K55"),
-	(YOUNG_MAN_A, "E20A")
-    )
+    CATEGORY_CHOICES = ((ELITE_MAN, "E21E"), (ELITE_WOMAN, "K21E"),
+                        (EXP_MAN_A, "E21A"), (EXP_WOMAN_A, "K21A"), (EXP_MAN_B,
+                                                                     "E21B"),
+                        (EXP_WOMAN_B, "K21B"), (YOUNG_WOMAN_A,
+                                                "K20A"), (YOUNG_MAN_B, "E20B"),
+                        (YOUNG_WOMAN_B,
+                         "K20B"), (OLD_WOMAN, "K55"), (YOUNG_MAN_A, "E20A"))
 
     SEX_CHOICES = (
         (MALE, "Male"),
@@ -187,7 +181,6 @@ class Team(models.Model):
     budget = models.PositiveSmallIntegerField(default=100)
     stage_1_score = models.PositiveSmallIntegerField(default=0)
     stage_2_score = models.PositiveSmallIntegerField(default=0)
-    stage_3_score = models.PositiveSmallIntegerField(default=0)
     total_score = models.PositiveSmallIntegerField(default=0)
 
     def add_player(
@@ -259,11 +252,9 @@ def update_team_score(sender, instance, *args, **kwargs):
     for team in instance.team_set.all():
         team.stage_1_score = 0
         team.stage_2_score = 0
-        team.stage_3_score = 0
         team.total_score = 0
         for player in team.selected_players.all():
             team.stage_1_score += player.score_1
             team.stage_2_score += player.score_2
-            team.stage_3_score += player.score_3
             team.total_score += player.total_score
         team.save()
