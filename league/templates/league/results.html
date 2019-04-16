@@ -29,6 +29,7 @@ Results
 		      <th>Name</th>
 					<th>Day 1 Score</th>
 					<th>Day 2 Score</th>
+                    <th>Day 3 Score</th>
 					<th>Total Score</th>
 		    </tr>
 		  </thead>
@@ -38,6 +39,7 @@ Results
 		      <td class="uppercase"><i class="material-icons">chevron_right</i><span class="num"></span>{{team.owner.first_name}} {{ team.owner.last_name }}</td>
 		      <td>{{team.stage_1_score}}</td>
 		      <td>{{team.stage_2_score}}</td>
+              <td>{{team.stage_3_score}}</td>
 		      <td class="total">{{team.total_score}}</td>
 		    </tr>
 		    <tr class="fold">
@@ -53,6 +55,7 @@ Results
 										<th>Group</th>
 										<th>Day 1 Score</th>
 										<th>Day 2 Score</th>
+                                        <th>Day 3 Score</th>
 										<th>Total Score</th>
 		              </tr>
 		            </thead>
@@ -64,6 +67,7 @@ Results
 		                <td>{{partic.group}}</td>
 		                <td>{{partic.score_1}}</td>
 		                <td>{{partic.score_2}}</td>
+		                <td>{{partic.score_23}</td>
 		                <td>{{partic.total_score}}</td>
 		              </tr>
 									{% endfor %}
@@ -86,6 +90,7 @@ Results
 							<th class="notsorted">Group</th>
 							<th class="notsorted">Day 1 Score</th>
 							<th class="notsorted">Day 2 Score</th>
+							<th class="notsorted">Day 3 Score</th>
 							<th class="notsorted">Total Score</th>
 						</tr>
 					</thead>
@@ -99,6 +104,7 @@ Results
 							<td>{{part.group}}</td>
 							<td>{{part.score_1}}</td>
 							<td>{{part.score_2}}</td>
+							<td>{{part.score_3}}</td>
               <td>{{part.total_score}}</td>
 						</tr>
 						{% endfor %}
