@@ -174,9 +174,9 @@ def update_participation_score(sender, instance, *args, **kwargs):
         if finish_time_3seconds <= disqualification_time_seconds:
             instance.score_3 = (wintime3seconds / finish_time_3seconds) * 1000
         else:
-            instance.score_2 = 0
+            instance.score_3 = 0
 
-    instance.total_score = instance.score_1 + instance.score_2
+    instance.total_score = instance.score_1 + instance.score_2 + instance.score_3
 
 
 class Team(models.Model):
