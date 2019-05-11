@@ -89,7 +89,7 @@ class Race(models.Model):
     name = models.CharField(max_length=255)
     # teams = models.ManyToManyField(Team)
     players = models.ManyToManyField(
-        Player, through="Participation", related_name="races")
+    Player, through="Participation", related_name="races")
     created_at = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(Stage)
     is_active = models.BooleanField(default=True)
@@ -117,8 +117,6 @@ class Participation(models.Model):
     score_1 = models.PositiveSmallIntegerField(default=0)
     finish_time_2 = models.DurationField(default=timedelta(seconds=0))
     score_2 = models.PositiveSmallIntegerField(default=0)
-    finish_time_3 = models.DurationField(default=timedelta(seconds=0))
-    score_3 = models.PositiveSmallIntegerField(default=0)
     total_score = models.PositiveSmallIntegerField(default=0)
     group = models.CharField(
         max_length=1, choices=GROUP_CHOICES, default=GROUP_1)
@@ -162,21 +160,8 @@ def update_participation_score(sender, instance, *args, **kwargs):
             instance.score_2 = (wintime2seconds / finish_time_2seconds) * 1000
         else:
             instance.score_2 = 0
-    if instance.finish_time_3.total_seconds() != 0:
-        stage3 = instance.race.stages.all().get(order="3")
-        stage3_fields_dict = instance.race.stages.values()[2]
-        disqualification_time = stage3_fields_dict["disqualification_time"]
-        disqualification_time_seconds = disqualification_time.total_seconds()
-        wintime3 = stage3_fields_dict[instance.player.official_category +
-                                      "_win_time"]
-        wintime3seconds = wintime3.total_seconds()
-        finish_time_3seconds = instance.finish_time_3.total_seconds()
-        if finish_time_3seconds <= disqualification_time_seconds:
-            instance.score_3 = (wintime3seconds / finish_time_3seconds) * 1000
-        else:
-            instance.score_3 = 0
 
-    instance.total_score = instance.score_1 + instance.score_2 + instance.score_3
+    instance.total_score = instance.score_1 + instance.score_2
 
 
 class Team(models.Model):
@@ -187,7 +172,6 @@ class Team(models.Model):
     budget = models.PositiveSmallIntegerField(default=100)
     stage_1_score = models.PositiveSmallIntegerField(default=0)
     stage_2_score = models.PositiveSmallIntegerField(default=0)
-    stage_3_score = models.PositiveSmallIntegerField(default=0)
     total_score = models.PositiveSmallIntegerField(default=0)
 
     def add_player(
@@ -248,11 +232,9 @@ def update_team_score(sender, instance, *args, **kwargs):
     for team in instance.team_set.all():
         team.stage_1_score = 0
         team.stage_2_score = 0
-        team.stage_3_score = 0
         team.total_score = 0
         for player in team.selected_players.all():
             team.stage_1_score += player.score_1
             team.stage_2_score += player.score_2
-            team.stage_3_score += player.score_3
             team.total_score += player.total_score
         team.save()

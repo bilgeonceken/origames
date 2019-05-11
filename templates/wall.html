@@ -25,8 +25,12 @@ function dragstart_handler(ev) {
     <div class="col s12">
       <h4 class="white-text">{{ race.name }}</h4>
       {% if not race.is_active %}
-      <h4 class="blue-text">THE RACE HAS ENDED. YOU CAN SEE THE RESULTS</h4>
+        <h4 class="blue-text">THE RACE HAS ENDED. YOU CAN SEE THE RESULTS</h4>
+      {% else %}
+        {% if team.count < 9 %}
+          <h4 class="blue-text">You must have 9 players in your team to be able to participate in Inter-University Origames</h4>
         {% endif %}
+      {% endif %}
     </div>
   </div>
 
