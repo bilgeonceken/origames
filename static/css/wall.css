@@ -1,3 +1,11 @@
+button.add, button.remove {
+  z-index: 998;
+}
+
+input.add, input.remove {
+  z-index: 999
+}
+
 .card{
   background-color: #333;
   border-radius: 10px;
