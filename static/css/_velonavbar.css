@@ -19,13 +19,15 @@ img {
   width: 100vw;
   background-color: #1c1c1c;
   /*  FIRST RED */
-  /* background: linear-gradient(rgba(44, 13, 13, 0.49), rgba(0, 0, 0, 0.8)); */
+   background: linear-gradient(rgba(44, 13, 13, 0.49), rgba(0, 0, 0, 0.8));
+   background: -webkit-linear-gradient(rgba(44, 13, 13, 0.49), rgba(0, 0, 0, 0.8)); 
+   background: -o-linear-gradient(rgba(44, 13, 13, 0.49), rgba(0, 0, 0, 0.8));
   /* SECOND BLUE */
   /*background: linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));*/
   /* THIRD GREEN */
-  background: -webkit-linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));
+/*  background: -webkit-linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));
   background: -o-linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));
-  background: linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));
+  background: linear-gradient(#0b250a, rgba(0, 0, 0, 0.8));*/
 }
 
 .bannermidwrapper {
@@ -52,9 +54,8 @@ img {
   margin: 0;
   width: 100vw;
   height: 50px;
-  background-color: #185214;
   /*FIST RED*/
-  /* background-color: #d32f2f; */
+   background-color: #d32f2f; 
   /* THIRD GREEN */
   /* background-color: ##185214; */
 }

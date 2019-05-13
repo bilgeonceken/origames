@@ -5,3 +5,4 @@ db.sqlite3
 origames.sock
 .watchmanconfig
 .idea/
+.DS_Store
