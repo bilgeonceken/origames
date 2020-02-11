@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=9)le+-0gz*6yk1cfe9k466)!wh8wl@ow%&8qm2z7_v&klre23'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '159.65.16.234', '127.0.0.1', 'origames.org', 'www.origames.org'
