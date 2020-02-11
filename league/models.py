@@ -19,6 +19,7 @@ class Player(models.Model):
     YOUNG_WOMAN_A = "K20A"
     YOUNG_MAN_B = "E20B"
     YOUNG_WOMAN_B = "K20B"
+    VERY_YOUNG_MAN = "E18"
     OLD_WOMAN = "K55"
 
     MALE = "M"
@@ -30,7 +31,7 @@ class Player(models.Model):
                         (EXP_WOMAN_B, "K21B"), (YOUNG_WOMAN_A,
                                                 "K20A"), (YOUNG_MAN_B, "E20B"),
                         (YOUNG_WOMAN_B,
-                         "K20B"), (OLD_WOMAN, "K55"), (YOUNG_MAN_A, "E20A"))
+                         "K20B"), (OLD_WOMAN, "K55"), (YOUNG_MAN_A, "E20A"), (VERY_YOUNG_MAN, "E18"))
 
     SEX_CHOICES = (
         (MALE, "Male"),
