@@ -104,11 +104,9 @@ class Race(models.Model):
 
 class Participation(models.Model):
     GROUP_1 = "1"
-    GROUP_2 = "2"
 
     GROUP_CHOICES = (
         (GROUP_1, "1"),
-        (GROUP_2, "2"),
     )
 
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
@@ -185,12 +183,10 @@ class Team(models.Model):
 
         group_counts = {
             "1": 0,
-            "2": 0,
         }
 
         group_limits = {
-            "1": 4,
-            "2": 5,
+            "1": 9,
         }
 
         ## get group counts to check if the group is full or not later

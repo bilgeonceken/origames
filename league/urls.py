@@ -9,6 +9,5 @@ urlpatterns = [
     path("stages", views.stages, name="stages"),
     path("rules", views.rules, name="rules"),
     path("results", views.results, name="results"),
-    path("iframe/", views.iframe, name="iframe"),
     # path("create_player", views.create_player, name="create_player"),
 ]

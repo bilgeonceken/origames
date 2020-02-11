@@ -41,11 +41,6 @@ def stages(request):
 def rules(request):
     return render(request, "rules.html")
 
-
-def iframe(request):
-    return render(request, "league/iframe.html")
-
-
 @login_required
 def results(request):
     race = models.Race.objects.first()
